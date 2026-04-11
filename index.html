@@ -514,8 +514,18 @@ textarea { resize: none; min-height: 100px; line-height: 1.65; }
 }
 .cb-pill:has(input:checked) { background: var(--blue); color: white; border-color: var(--blue); }
 .cb-pill:focus-within { outline: 2px solid var(--blue-light); outline-offset: 2px; }
+/* Reset checkbox/radio — undo the broad input rule */
+input[type="checkbox"], input[type="radio"] {
+  -webkit-appearance: auto;
+  appearance: auto;
+  width: auto; height: auto;
+  min-width: unset; padding: 0;
+  border: initial; background: none;
+  border-radius: 0; font-size: initial;
+  cursor: pointer;
+}
 .cb-label { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--mid); line-height: 1.55; }
-.cb-label input[type="checkbox"] { width: 15px; min-width: 15px; height: 15px; margin-top: 0.15rem; accent-color: var(--blue); flex-shrink: 0; }
+.cb-label input[type="checkbox"] { width: 16px; min-width: 16px; height: 16px; margin-top: 0.2rem; accent-color: var(--blue); flex-shrink: 0; }
 .f-foot { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
 .f-disc { font-size: 0.73rem; font-weight: 600; color: var(--mid); line-height: 1.6; max-width: 220px; }
 .btn-submit {
@@ -1199,7 +1209,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
     btn.disabled = true;
 
     try {
-      const res = await fetch('https://formspree.io/f/pluggedinnzteam@gmail.com', {
+      const res = await fetch('https://formspree.io/pluggedinnzteam@gmail.com', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: new FormData(joinForm)
