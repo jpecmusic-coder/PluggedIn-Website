@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PluggedIn — Connecting Aotearoa's Music Community</title>
+<meta name="description" content="PluggedIn connects Aotearoa's serious music community through curated artist camps, seminars, and events. Songwriters, producers, and engineers — this is where the wiring happens.">
+
+<!-- Open Graph / Social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jpecmusic-coder.github.io/PluggedIn-Website/">
+<meta property="og:title" content="PluggedIn — Connecting Aotearoa's Music Community">
+<meta property="og:description" content="Curated artist camps, seminars, and events for Aotearoa's serious music community. Starting on the Kāpiti Coast.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PluggedIn — Connecting Aotearoa's Music Community">
+<meta name="twitter:description" content="Curated artist camps, seminars, and events for Aotearoa's serious music community.">
+<link rel="canonical" href="https://jpecmusic-coder.github.io/PluggedIn-Website/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231a3aad'/><text x='16' y='22' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='14' fill='white'>PI</text></svg>">
+
+<!-- Font preconnect — warm up DNS before render-blocking requests fire -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap">
 <style>
@@ -55,6 +74,16 @@ body::before {
 .icon svg { display: block; }
 .h-card-icon { display: flex; align-items: center; margin-bottom: 0.75rem; }
 
+/* ── SKIP LINK ── */
+.skip-link {
+  position: absolute; top: -100px; left: 1.5rem; z-index: 9999;
+  background: var(--blue); color: white;
+  padding: 0.75rem 1.5rem; border-radius: 0 0 10px 10px;
+  font-weight: 700; font-size: 0.85rem; text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
@@ -72,11 +101,50 @@ nav.scrolled {
 .nav-links a { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; color: var(--mid); text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: var(--blue); }
 .nav-cta {
-  background: var(--blue); color: white !important;
+  background: var(--blue); color: white;
   padding: 0.55rem 1.25rem; border-radius: 100px;
-  font-weight: 700 !important; transition: background 0.2s !important;
+  font-weight: 700; transition: background 0.2s;
+  min-height: 44px; display: inline-flex; align-items: center;
 }
-.nav-cta:hover { background: var(--blue-mid) !important; }
+.nav-cta:hover { background: var(--blue-mid); }
+
+/* Mobile hamburger toggle */
+.nav-toggle {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer;
+  padding: 10px; border-radius: 8px; min-width: 44px; min-height: 44px;
+}
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--ink); border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+  pointer-events: none;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.nav-drawer {
+  position: fixed; top: 62px; left: 0; right: 0; z-index: 499;
+  background: rgba(247,248,252,0.98); backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.5rem 1.5rem 1.5rem;
+  transform: translateY(-8px); opacity: 0; pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-drawer.open { transform: none; opacity: 1; pointer-events: auto; }
+.nav-drawer ul { list-style: none; }
+.nav-drawer ul li a {
+  display: block; padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.9rem; font-weight: 600; color: var(--mid);
+  text-decoration: none; transition: color 0.15s;
+}
+.nav-drawer ul li a:hover { color: var(--blue); }
+.nav-drawer .nav-cta {
+  display: inline-flex; margin-top: 1.25rem; border-bottom: none;
+}
 
 /* ── HERO ── */
 .hero {
@@ -98,11 +166,11 @@ nav.scrolled {
   display: inline-flex; align-items: center; gap: 0.5rem;
   background: var(--lime); color: var(--ink);
   padding: 0.4rem 1rem; border-radius: 100px;
-  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
+  font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em;
 }
 .kicker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
 .hero-badge {
-  font-size: 0.7rem; font-weight: 600; color: var(--mid);
+  font-size: 0.75rem; font-weight: 600; color: var(--mid);
   border: 1.5px solid var(--rule); padding: 0.38rem 0.9rem; border-radius: 100px;
 }
 
@@ -136,7 +204,7 @@ nav.scrolled {
   font-family: 'Clash Display', sans-serif; font-weight: 700;
   font-size: 2.2rem; color: var(--blue); display: block; line-height: 1; letter-spacing: -0.02em;
 }
-.h-stat-l { font-size: 0.65rem; font-weight: 700; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; }
+.h-stat-l { font-size: 0.7rem; font-weight: 700; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* Community type cards */
 .hero-cards {
@@ -158,11 +226,11 @@ nav.scrolled {
 .h-card-body { font-size: 0.78rem; font-weight: 500; color: var(--mid); line-height: 1.6; }
 .h-card-status {
   display: inline-block; margin-top: 0.65rem;
-  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--blue-light);
 }
 .h-card.accent .h-card-status { color: var(--ink); opacity: 0.6; }
-.h-card.coming .h-card-status { color: var(--faint); }
+.h-card.coming .h-card-status { color: var(--mid); }
 
 @keyframes up { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:none; } }
 
@@ -172,7 +240,7 @@ nav.scrolled {
   margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1.5px solid var(--rule);
   gap: 2rem;
 }
-.sh-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.6rem; }
+.sh-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.6rem; }
 .sh-h {
   font-family: 'Clash Display', sans-serif; font-weight: 700;
   font-size: clamp(2.4rem, 4.5vw, 4rem);
@@ -187,7 +255,7 @@ nav.scrolled {
   border-top: 1px solid var(--rule);
   display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
 }
-.about-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.85rem; }
+.about-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.85rem; }
 .about-h2 {
   font-family: 'Clash Display', sans-serif; font-weight: 700;
   font-size: clamp(2.5rem, 4.5vw, 4rem);
@@ -219,7 +287,7 @@ nav.scrolled {
 .pillar p { font-size: 0.82rem; font-weight: 500; color: var(--mid); line-height: 1.7; }
 .pillar-badge {
   display: inline-block; margin-top: 0.5rem;
-  font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
   background: var(--lime); color: var(--ink); padding: 0.15rem 0.5rem; border-radius: 4px;
 }
 .pillar-badge.soon { background: var(--blue-pale); color: var(--blue); }
@@ -242,14 +310,14 @@ nav.scrolled {
 .event-row.upcoming:hover { opacity: 1; background: var(--bg2); }
 
 .ev-type {
-  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
   display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem;
 }
 .ev-type-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .ev-type-dot.camp { background: var(--lime-dk); }
 .ev-type-dot.seminar { background: var(--blue-light); }
 .ev-type-dot.tbd { background: var(--faint); }
-.ev-type.on-dark { color: rgba(255,255,255,0.4); }
+.ev-type.on-dark { color: rgba(255,255,255,0.7); }
 .ev-type.on-dark .ev-type-dot.camp { background: var(--lime); }
 .ev-name {
   font-family: 'Clash Display', sans-serif; font-weight: 700;
@@ -263,9 +331,9 @@ nav.scrolled {
   font-family: 'Clash Display', sans-serif; font-weight: 700;
   font-size: 2rem; color: var(--blue); letter-spacing: -0.025em; line-height: 1;
 }
-.ev-price-note { font-size: 0.68rem; font-weight: 600; color: var(--mid); display: block; margin-top: 0.15rem; }
+.ev-price-note { font-size: 0.72rem; font-weight: 600; color: var(--mid); display: block; margin-top: 0.15rem; }
 .event-row.featured .ev-price { color: var(--lime); }
-.event-row.featured .ev-price-note { color: rgba(255,255,255,0.4); }
+.event-row.featured .ev-price-note { color: rgba(255,255,255,0.7); }
 .event-row.upcoming .ev-price { color: var(--faint); }
 
 .ev-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -274,7 +342,7 @@ nav.scrolled {
   background: var(--bg2); border: 1.5px solid var(--rule);
   padding: 0.22rem 0.65rem; border-radius: 100px;
 }
-.event-row.featured .ev-pill { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.12); }
+.event-row.featured .ev-pill { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.2); }
 
 .ev-action a {
   display: inline-flex; align-items: center; gap: 0.4rem;
@@ -286,7 +354,12 @@ nav.scrolled {
 .ghost:hover { border-color: var(--blue); color: var(--blue); }
 .solid { background: var(--lime); color: var(--ink); border: none; font-weight: 800; }
 .solid:hover { background: var(--lime-dk); }
-.dim { border: 1.5px solid var(--rule); color: var(--faint); cursor: default; }
+.dim {
+  border: 1.5px solid var(--rule); color: var(--faint); cursor: not-allowed;
+  background: none; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 800; letter-spacing: 0.03em;
+  padding: 0.65rem 1.35rem; border-radius: 100px; white-space: nowrap;
+}
 
 /* ── CAMP EXPERIENCE BENTO ── */
 .experience { padding: 0 2.5rem 5rem; }
@@ -296,7 +369,7 @@ nav.scrolled {
   padding: 1.75rem; transition: transform 0.25s, box-shadow 0.25s; overflow: hidden; position: relative;
 }
 .b:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(26,58,173,0.08); }
-.b-tag { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.65rem; }
+.b-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.65rem; }
 .b-title { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--ink); letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.6rem; }
 .b-body { font-size: 0.82rem; font-weight: 500; color: var(--mid); line-height: 1.7; }
 .b-body strong { color: var(--ink); font-weight: 800; }
@@ -306,14 +379,14 @@ nav.scrolled {
 .b-sat   { grid-column: span 2; }
 .b-sun   { grid-column: span 2; }
 .b-playback { grid-column: span 3; background: var(--blue); border-color: var(--blue); }
-.b-playback .b-tag { color: rgba(255,255,255,0.45); }
+.b-playback .b-tag { color: rgba(255,255,255,0.75); }
 .b-playback .b-title { color: var(--lime); }
-.b-playback .b-body { color: rgba(255,255,255,0.6); }
+.b-playback .b-body { color: rgba(255,255,255,0.82); }
 .b-playback .b-body strong { color: white; }
 .b-playback .b-bg-num { color: rgba(255,255,255,0.04); }
 .b-record { grid-column: span 3; background: var(--lime); border-color: var(--lime-dk); }
-.b-record .b-tag { color: rgba(15,17,32,0.5); }
-.b-record .b-body { color: var(--ink2); opacity: 0.75; }
+.b-record .b-tag { color: rgba(15,17,32,0.65); }
+.b-record .b-body { color: var(--ink2); opacity: 0.88; }
 .b-phone { grid-column: span 2; background: var(--grad-soft); border-color: rgba(75,112,245,0.2); }
 .b-group { grid-column: span 2; }
 .b-meals { grid-column: span 2; }
@@ -359,7 +432,7 @@ nav.scrolled {
 }
 .wn-hed { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 2.5rem; color: var(--lime); line-height: 0.95; letter-spacing: -0.025em; white-space: nowrap; }
 .wn-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.wn-pill { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.08); padding: 0.3rem 0.8rem; border-radius: 100px; }
+.wn-pill { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.12); padding: 0.3rem 0.8rem; border-radius: 100px; }
 .wn-pill::before { content: '× '; }
 
 /* ── SETTING ── */
@@ -376,10 +449,10 @@ nav.scrolled {
   display: grid; grid-template-columns: 1fr auto; gap: 3.5rem; align-items: center;
 }
 .sw-title { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--lime); letter-spacing: -0.01em; margin-bottom: 0.75rem; }
-.sw-body { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.55); line-height: 1.8; max-width: 560px; }
+.sw-body { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.78); line-height: 1.8; max-width: 560px; }
 .sw-stats { display: flex; gap: 2.25rem; flex-shrink: 0; }
 .sw-stat-v { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 1.9rem; color: white; display: block; line-height: 1; letter-spacing: -0.02em; }
-.sw-stat-l { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+.sw-stat-l { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
 
 /* ── VISION / CTA STRIP ── */
 .vision {
@@ -394,14 +467,14 @@ nav.scrolled {
 .v-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; min-width: 260px; }
 .v-stat { background: rgba(15,17,32,0.08); border-radius: 14px; padding: 1.4rem 1.25rem; }
 .v-stat-v { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 1.75rem; color: var(--ink); display: block; line-height: 1; margin-bottom: 0.3rem; letter-spacing: -0.02em; }
-.v-stat-l { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); opacity: 0.45; }
+.v-stat-l { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); opacity: 0.6; }
 
 /* ── JOIN FORM ── */
 .join {
   padding: 0 2.5rem 6rem;
   display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem;
 }
-.join-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.85rem; }
+.join-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue-light); display: block; margin-bottom: 0.85rem; }
 .join-h { font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 0.92; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 1.25rem; }
 .join-h .serif { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 0.9em; color: var(--blue); }
 .join-desc { font-size: 0.9rem; font-weight: 500; color: var(--mid); line-height: 1.8; margin-bottom: 2.5rem; }
@@ -413,10 +486,10 @@ nav.scrolled {
 form { display: flex; flex-direction: column; gap: 1.4rem; }
 .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
 .f-field { display: flex; flex-direction: column; gap: 0.45rem; }
-label { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
 input, select, textarea {
   background: var(--bg); border: 1.5px solid var(--rule); border-radius: 10px; padding: 0.7rem 0.9rem;
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 500;
   color: var(--ink); outline: none; width: 100%;
   transition: border-color 0.2s, background 0.2s; -webkit-appearance: none;
 }
@@ -428,12 +501,19 @@ textarea { resize: none; min-height: 100px; line-height: 1.65; }
 
 .cb-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .cb-pill {
-  display: flex; align-items: center; cursor: pointer;
+  display: flex; align-items: center; cursor: pointer; position: relative;
   background: var(--bg); border: 1.5px solid var(--rule); border-radius: 100px; padding: 0.38rem 0.9rem;
   font-size: 0.75rem; font-weight: 700; color: var(--mid); transition: all 0.15s; user-select: none;
+  min-height: 44px;
 }
-.cb-pill input { display: none; }
+/* Visually hidden but keyboard-accessible */
+.cb-pill input[type="checkbox"] {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 .cb-pill:has(input:checked) { background: var(--blue); color: white; border-color: var(--blue); }
+.cb-pill:focus-within { outline: 2px solid var(--blue-light); outline-offset: 2px; }
 .cb-label { display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer; font-size: 0.82rem; font-weight: 600; color: var(--mid); line-height: 1.55; }
 .cb-label input[type="checkbox"] { width: 15px; min-width: 15px; height: 15px; margin-top: 0.15rem; accent-color: var(--blue); flex-shrink: 0; }
 .f-foot { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
@@ -464,11 +544,26 @@ footer {
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.75s ease, transform 0.75s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 
+/* ── FOCUS RINGS — visible keyboard navigation ── */
+:focus-visible {
+  outline: 2px solid var(--blue-light);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* Inputs use box-shadow focus instead */
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; }
+/* Nav brand / footer brand don't need a box around the whole logo */
+.nav-brand:focus-visible, .f-brand:focus-visible { outline-offset: 6px; border-radius: 6px; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { display: none; }
+  .nav-toggle { display: flex; }
   .hero { padding: 6rem 1.5rem 0; }
+  /* hero-mid: stack description above stats on mobile */
+  .hero-mid { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .hero-stats { flex-wrap: wrap; gap: 1.5rem 2rem; }
   .hero-cards { grid-template-columns: 1fr 1fr; }
   .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
   .events { padding: 0 1.5rem 4rem; }
@@ -489,12 +584,27 @@ footer {
   .f-foot { flex-direction: column; align-items: flex-start; }
   footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
 }
+
+/* ── REDUCED MOTION — respect OS accessibility setting ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveal elements immediately without animation */
+  .hero-top, .hero-h1, .hero-mid, .hero-cards { opacity: 1; animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <!-- ── NAV ── -->
-<nav id="nav">
+<nav id="nav" aria-label="Main navigation">
   <a href="#top" class="nav-brand">
     <svg height="36" viewBox="0 0 268 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -522,7 +632,23 @@ footer {
     <li><a href="#setting">The Setting</a></li>
     <li><a href="#join" class="nav-cta">Get Involved</a></li>
   </ul>
+  <button class="nav-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-drawer">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile nav drawer -->
+<div class="nav-drawer" id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+  <ul>
+    <li><a href="#about">Community</a></li>
+    <li><a href="#events">What's On</a></li>
+    <li><a href="#who">Who It's For</a></li>
+    <li><a href="#setting">The Setting</a></li>
+    <li><a href="#join" class="nav-cta">Get Involved</a></li>
+  </ul>
+</div>
+
+<main id="main">
 
 <!-- ── HERO ── -->
 <section class="hero" id="top">
@@ -648,7 +774,7 @@ footer {
           <div class="ev-type-dot camp"></div>
           <span style="color:var(--mid);">Artist Camp · 01</span>
         </div>
-        <div class="ev-name">The Foundation</div>
+        <h3 class="ev-name">The Foundation</h3>
       </div>
       <div class="ev-mid">
         <div>
@@ -671,7 +797,7 @@ footer {
           <div class="ev-type-dot camp"></div>
           <span>Artist Camp · 02</span>
         </div>
-        <div class="ev-name">First Paying Camp</div>
+        <h3 class="ev-name">First Paying Camp</h3>
       </div>
       <div class="ev-mid">
         <div>
@@ -696,7 +822,7 @@ footer {
           <div class="ev-type-dot camp"></div>
           <span style="color:var(--mid);">Artist Camp · 03</span>
         </div>
-        <div class="ev-name">The Premium</div>
+        <h3 class="ev-name">The Premium</h3>
       </div>
       <div class="ev-mid">
         <div>
@@ -719,7 +845,7 @@ footer {
           <div class="ev-type-dot seminar"></div>
           <span style="color:var(--faint);">Seminar · TBC</span>
         </div>
-        <div class="ev-name">Songwriting Intensive</div>
+        <h3 class="ev-name">Songwriting Intensive</h3>
       </div>
       <div class="ev-mid">
         <div>
@@ -732,7 +858,7 @@ footer {
           <span class="ev-pill">Coming 2025</span>
         </div>
       </div>
-      <div class="ev-action"><a class="dim">Notify Me</a></div>
+      <div class="ev-action"><button class="dim" disabled aria-disabled="true">Notify Me</button></div>
     </div>
 
   </div>
@@ -752,55 +878,55 @@ footer {
   <div class="outcomes reveal">
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div>
-        <div class="outcome-title">Genuine connections</div>
+        <h3 class="outcome-title">Genuine connections</h3>
         <p class="outcome-body">A small, hand-picked group of the most talented creatives in Aotearoa. Not a networking event — a room where real creative friendships and collaborations are sparked.</p>
       </div>
     </div>
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
       <div>
-        <div class="outcome-title">Uninterrupted creative time</div>
+        <h3 class="outcome-title">Uninterrupted creative time</h3>
         <p class="outcome-body">A phone-free morning, no schedule pulling you away, no commute, no life admin. Just the space and time to go deep on your craft — the kind of focused creative block most artists never get.</p>
       </div>
     </div>
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       </div>
       <div>
-        <div class="outcome-title">Content captured for you</div>
+        <h3 class="outcome-title">Content captured for you</h3>
         <p class="outcome-body">A photographer and videographer on-site capturing the weekend — the process, the people, the Sunday playback. Professional content you can actually use, ready to take away.</p>
       </div>
     </div>
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </div>
       <div>
-        <div class="outcome-title">Real recorded ideas</div>
+        <h3 class="outcome-title">Real recorded ideas</h3>
         <p class="outcome-body">A dedicated recording station on-site all weekend — interface, mics, laptop, and DAW. Leave with demos, voice memos and captured ideas that are actually production-ready, not just phone recordings.</p>
       </div>
     </div>
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
       </div>
       <div>
-        <div class="outcome-title">All meals included</div>
+        <h3 class="outcome-title">All meals included</h3>
         <p class="outcome-body">Communal meals from arrival to departure — all included in the ticket price. The table is where some of the best ideas happen. No logistics, no splitting bills, just shared food and conversation.</p>
       </div>
     </div>
     <div class="outcome">
       <div class="outcome-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
       <div>
-        <div class="outcome-title">The Sunday playback moment</div>
+        <h3 class="outcome-title">The Sunday playback moment</h3>
         <p class="outcome-body">Every camp ends the same way — everyone shares their best idea from the weekend, filmed. It's the moment the work becomes real. Artists consistently call it the most creatively alive they've felt in years.</p>
       </div>
     </div>
@@ -829,12 +955,12 @@ footer {
     <p class="sh-note">PluggedIn is curated — every member is chosen deliberately. Here's who the community is built for.</p>
   </div>
   <div class="who-grid reveal">
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">Professional Songwriters</span><span class="wc-desc">Writing with or for artists, building a catalogue. You take the craft seriously and want a room that meets you at that level.</span></div></div>
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">Producers & Beatmakers</span><span class="wc-desc">You work with artists or want to. Comfortable collaborating. You know what a good session feels like.</span></div></div>
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">Recording & Mixing Engineers</span><span class="wc-desc">You want to be creative, not just technical. You know what makes a great capture.</span></div></div>
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">Artists Who Write Their Own Music</span><span class="wc-desc">Creating original work and wanting to push it further in a focused environment with the right people.</span></div></div>
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">Aotearoa Music Industry Professionals</span><span class="wc-desc">Embedded in the scene and wanting to connect and collaborate with serious creatives outside the usual context.</span></div></div>
-    <div class="wc"><div class="wc-dot"></div><div><span class="wc-title">The Referral Network</span><span class="wc-desc">For early events, every spot is referral only. Your best route in is knowing someone already inside.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">Professional Songwriters</h3><span class="wc-desc">Writing with or for artists, building a catalogue. You take the craft seriously and want a room that meets you at that level.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">Producers & Beatmakers</h3><span class="wc-desc">You work with artists or want to. Comfortable collaborating. You know what a good session feels like.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">Recording & Mixing Engineers</h3><span class="wc-desc">You want to be creative, not just technical. You know what makes a great capture.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">Artists Who Write Their Own Music</h3><span class="wc-desc">Creating original work and wanting to push it further in a focused environment with the right people.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">Aotearoa Music Industry Professionals</h3><span class="wc-desc">Embedded in the scene and wanting to connect and collaborate with serious creatives outside the usual context.</span></div></div>
+    <div class="wc"><div class="wc-dot"></div><div><h3 class="wc-title">The Referral Network</h3><span class="wc-desc">For early events, every spot is referral only. Your best route in is knowing someone already inside.</span></div></div>
     <div class="who-not">
       <div class="wn-hed">NOT FOR<br>EVERYONE —<br>AND THAT'S<br>THE POINT.</div>
       <div class="wn-pills">
@@ -878,7 +1004,7 @@ footer {
 </section>
 
 <!-- ── VISION ── -->
-<div class="vision reveal">
+<section class="vision reveal" aria-label="Get involved">
   <div>
     <span class="v-tag">Get Involved</span>
     <h2 class="v-h">GET CONNECTED<br>FROM THE <span class="serif">beginning.</span></h2>
@@ -890,7 +1016,7 @@ footer {
     <div class="v-stat"><span class="v-stat-v">More TBC</span><span class="v-stat-l">Events coming</span></div>
     <div class="v-stat"><span class="v-stat-v">Aotearoa</span><span class="v-stat-l">Wide community</span></div>
   </div>
-</div>
+</section>
 
 <!-- ── JOIN FORM ── -->
 <section class="join" id="join">
@@ -908,17 +1034,21 @@ footer {
   </div>
 
   <div class="form-box reveal">
-    <form id="joinForm">
+    <form id="joinForm" novalidate>
+      <!-- Formspree config -->
+      <input type="hidden" name="_subject" value="New PluggedIn expression of interest">
+      <input type="hidden" name="_replyto" id="em-hidden">
+
       <div class="f-row">
-        <div class="f-field"><label for="fn">First Name</label><input type="text" id="fn" placeholder="Your first name" required></div>
-        <div class="f-field"><label for="ln">Last Name</label><input type="text" id="ln" placeholder="Your last name" required></div>
+        <div class="f-field"><label for="fn">First Name</label><input type="text" id="fn" name="first-name" placeholder="Your first name" required autocomplete="given-name"></div>
+        <div class="f-field"><label for="ln">Last Name</label><input type="text" id="ln" name="last-name" placeholder="Your last name" required autocomplete="family-name"></div>
       </div>
-      <div class="f-field"><label for="em">Email Address</label><input type="email" id="em" placeholder="you@email.com" required></div>
-      <div class="f-field"><label for="lk">Instagram / SoundCloud / Website</label><input type="text" id="lk" placeholder="@yourhandle or yoursite.com"></div>
+      <div class="f-field"><label for="em">Email Address</label><input type="email" id="em" name="email" placeholder="you@email.com" required autocomplete="email"></div>
+      <div class="f-field"><label for="lk">Instagram / SoundCloud / Website</label><input type="text" id="lk" name="social-links" placeholder="@yourhandle or yoursite.com"></div>
       <div class="f-row">
         <div class="f-field">
           <label for="rl">What best describes you?</label>
-          <select id="rl" required>
+          <select id="rl" name="role" required>
             <option value="" disabled selected>Select your role</option>
             <option>Songwriter</option>
             <option>Producer / Beatmaker</option>
@@ -931,23 +1061,23 @@ footer {
         </div>
         <div class="f-field">
           <label for="rf">How did you hear about PluggedIn?</label>
-          <input type="text" id="rf" placeholder="Name, connection, or where you saw it">
+          <input type="text" id="rf" name="referral" placeholder="Name, connection, or where you saw it">
         </div>
       </div>
       <div class="f-field">
         <label>What are you most interested in?</label>
         <div class="cb-row">
-          <label class="cb-pill"><input type="checkbox">Artist Camps</label>
-          <label class="cb-pill"><input type="checkbox">Seminars & Workshops</label>
-          <label class="cb-pill"><input type="checkbox">Live Events</label>
-          <label class="cb-pill"><input type="checkbox">Everything — keep me posted</label>
+          <label class="cb-pill"><input type="checkbox" name="interests" value="Artist Camps">Artist Camps</label>
+          <label class="cb-pill"><input type="checkbox" name="interests" value="Seminars & Workshops">Seminars & Workshops</label>
+          <label class="cb-pill"><input type="checkbox" name="interests" value="Live Events">Live Events</label>
+          <label class="cb-pill"><input type="checkbox" name="interests" value="Everything">Everything — keep me posted</label>
         </div>
       </div>
-      <div class="f-field"><label for="bi">Tell us about yourself and your work</label><textarea id="bi" placeholder="What are you working on? What would you want from PluggedIn? Any releases, credits, or context that helps us understand your creative practice..." required></textarea></div>
+      <div class="f-field"><label for="bi">Tell us about yourself and your work</label><textarea id="bi" name="about" placeholder="What are you working on? What would you want from PluggedIn? Any releases, credits, or context that helps us understand your creative practice..." required></textarea></div>
       <div class="f-rule"></div>
       <div class="f-field">
         <label class="cb-label">
-          <input type="checkbox" required>
+          <input type="checkbox" name="consent" required>
           I understand this is an expression of interest. I agree PluggedIn may contact me about upcoming events and community updates. Camp bookings require a separate signed agreement on confirmation.
         </label>
       </div>
@@ -964,22 +1094,24 @@ footer {
   </div>
 </section>
 
+</main>
+
 <!-- ── FOOTER ── -->
 <footer>
-  <a href="#top" class="f-brand">
-    <svg height="28" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <a href="#top" class="f-brand" aria-label="PluggedIn — back to top">
+    <svg height="28" viewBox="0 0 268 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#5bc8f5"/>
-          <stop offset="45%" stop-color="#5b6bf5"/>
+          <stop offset="50%" stop-color="#5b6bf5"/>
           <stop offset="100%" stop-color="#8b3cf7"/>
         </linearGradient>
       </defs>
-      <text x="0" y="31" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="32" fill="#0f1120" letter-spacing="-1">plugg</text>
-      <rect x="152" y="13" width="14" height="5" rx="2.5" fill="url(#fg)"/>
-      <rect x="152" y="23" width="14" height="5" rx="2.5" fill="url(#fg)"/>
-      <path d="M165 7 L165 34 Q195 34 195 20.5 Q195 7 165 7Z" fill="url(#fg)"/>
-      <text x="170" y="26" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="11" fill="white" letter-spacing="0.5">IN</text>
+      <text x="2" y="34" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="34" fill="#0f1120" letter-spacing="-1.5">plugg</text>
+      <rect x="162" y="14" width="17" height="5.5" rx="2.75" fill="url(#fg)"/>
+      <rect x="162" y="25" width="17" height="5.5" rx="2.75" fill="url(#fg)"/>
+      <rect x="175" y="6" width="88" height="33" rx="16.5" fill="url(#fg)"/>
+      <text x="219" y="28.5" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="13" fill="white" letter-spacing="2" text-anchor="middle">IN</text>
     </svg>
   </a>
   <p class="f-mid">Connecting Aotearoa's music community</p>
@@ -994,23 +1126,103 @@ footer {
 </div>
 
 <script>
+  // ── Scrolled nav state ──
   window.addEventListener('scroll', () => {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
-  });
+  }, { passive: true });
+
+  // ── Scroll-reveal ──
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
   }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  document.getElementById('joinForm').addEventListener('submit', e => {
-    e.preventDefault();
-    document.getElementById('joinForm').style.display = 'none';
-    document.getElementById('formSuccess').classList.add('show');
-  });
+
+  // ── Smooth scroll with fixed-nav offset ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) { e.preventDefault(); window.scrollTo({ top: t.offsetTop - 68, behavior: 'smooth' }); }
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        window.scrollTo({ top: target.offsetTop - 72, behavior: 'smooth' });
+      }
     });
+  });
+
+  // ── Mobile nav drawer ──
+  const toggle = document.querySelector('.nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+    drawer.classList.toggle('open', !isOpen);
+    drawer.setAttribute('aria-hidden', String(isOpen));
+  });
+  // Close drawer when any drawer link is clicked
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+    });
+  });
+  // Close drawer on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggle.focus();
+    }
+  });
+
+  // ── Formspree form submission ──
+  // Note: Formspree will send a confirmation email to pluggedinnzteam@gmail.com
+  // on the first submission. Click the link in that email to activate the form.
+  const joinForm = document.getElementById('joinForm');
+  const formSuccess = document.getElementById('formSuccess');
+
+  joinForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = joinForm.querySelector('.btn-submit');
+    const originalText = btn.textContent;
+
+    // Keep the reply-to in sync with the email field
+    const emailVal = joinForm.querySelector('#em').value;
+    joinForm.querySelector('#em-hidden').value = emailVal;
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://formspree.io/f/pluggedinnzteam@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(joinForm)
+      });
+
+      if (res.ok) {
+        joinForm.style.display = 'none';
+        formSuccess.classList.add('show');
+        // Move focus to success message so screen readers announce it
+        formSuccess.setAttribute('tabindex', '-1');
+        formSuccess.focus();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        const msg = data.errors ? data.errors.map(e => e.message).join(', ') : 'Something went wrong. Please try again.';
+        btn.textContent = originalText;
+        btn.disabled = false;
+        alert(msg);
+      }
+    } catch {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      alert('Could not connect. Please check your connection and try again.');
+    }
   });
 </script>
 </body>
