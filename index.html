@@ -575,6 +575,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
   .hero-mid { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
   .hero-stats { flex-wrap: wrap; gap: 1.5rem 2rem; }
   .hero-cards { grid-template-columns: 1fr 1fr; }
+  /* Section headers: stack heading above note text */
+  .sh { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+  .sh-note { max-width: 100%; }
   .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
   .events { padding: 0 1.5rem 4rem; }
   .event-row { grid-template-columns: 1fr; gap: 1.25rem; }
@@ -585,14 +588,33 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
   .who { padding: 0 1.5rem 4rem; }
   .who-grid { grid-template-columns: 1fr; }
   .who-not { grid-column: 1; grid-template-columns: 1fr; gap: 1.5rem; }
+  /* Fix "NOT FOR EVERYONE" heading overflow on small screens */
+  .wn-hed { white-space: normal; font-size: 2rem; }
   .setting { padding: 0 1.5rem 4rem; }
   .setting-tiles { grid-template-columns: 1fr; }
   .setting-wide { grid-column: 1; grid-template-columns: 1fr; gap: 2rem; }
+  /* Setting stats: wrap so they don't overflow */
+  .sw-stats { flex-wrap: wrap; gap: 1.25rem; }
   .vision { margin: 0 1.5rem 4rem; grid-template-columns: 1fr; padding: 2.5rem 2rem; }
   .join { padding: 0 1.5rem 5rem; grid-template-columns: 1fr; gap: 3rem; }
   .f-row { grid-template-columns: 1fr; }
   .f-foot { flex-direction: column; align-items: flex-start; }
   footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+}
+
+/* ── Extra small screens (≤480px) ── */
+@media (max-width: 480px) {
+  /* Hero cards: single column on small phones */
+  .hero-cards { grid-template-columns: 1fr; }
+  /* Bento: single column so cards aren't too cramped */
+  .bento { grid-template-columns: 1fr; }
+  /* Event action buttons: full width */
+  .ev-action { width: 100%; }
+  .ev-action a, .ev-action button { width: 100%; justify-content: center; }
+  /* Vision stats: 2 cols instead of 4 */
+  .v-stats { grid-template-columns: 1fr 1fr; }
+  /* Form foot: ensure button doesn't overflow */
+  .btn-submit { width: 100%; justify-content: center; }
 }
 
 /* ── REDUCED MOTION — respect OS accessibility setting ── */
