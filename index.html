@@ -580,6 +580,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
   /* Section headers: stack heading above note text */
   .sh { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
   .sh-note { max-width: 100%; }
+  /* Force italic serif spans in section headings onto their own line */
+  .sh-h .serif { display: block; }
   .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
   .events { padding: 0 1.5rem 4rem; }
   .event-row { grid-template-columns: 1fr; gap: 1.25rem; }
@@ -606,6 +608,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
 
 /* ── Extra small screens (≤480px) ── */
 @media (max-width: 480px) {
+  /* Hero: scale down so "CONNECTING" / "AOTEAROA'S" don't spill */
+  .hero-h1 { font-size: clamp(1.8rem, 9.5vw, 3.8rem); }
   /* Hero cards: single column on small phones */
   .hero-cards { grid-template-columns: 1fr; }
   /* Bento: single column so cards aren't too cramped */
@@ -613,8 +617,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
   /* Event action buttons: full width */
   .ev-action { width: 100%; }
   .ev-action a, .ev-action button { width: 100%; justify-content: center; }
-  /* Vision stats: 2 cols instead of 4 */
+  /* Vision card: tighter padding + smaller stat values so boxes stay inside */
+  .vision { padding: 2rem 1.25rem; }
   .v-stats { grid-template-columns: 1fr 1fr; }
+  .v-stat { padding: 1rem 0.85rem; }
+  .v-stat-v { font-size: 1.1rem; }
   /* Form foot: ensure button doesn't overflow */
   .btn-submit { width: 100%; justify-content: center; }
 }
