@@ -654,23 +654,21 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
 <!-- ── NAV ── -->
 <nav id="nav" aria-label="Main navigation">
   <a href="#top" class="nav-brand">
-    <svg height="36" viewBox="0 0 262 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PluggedIn" role="img">
+    <svg height="36" viewBox="0 0 258 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PluggedIn" role="img">
       <defs>
-        <linearGradient id="lg" x1="152" y1="0" x2="259" y2="0" gradientUnits="userSpaceOnUse">
+        <!-- Soft diagonal gradient: cyan top-left → indigo → purple bottom-right -->
+        <linearGradient id="lg" x1="152" y1="5" x2="253" y2="39" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#5bc8f5"/>
-          <stop offset="48%" stop-color="#5b6bf5"/>
+          <stop offset="50%" stop-color="#5b6bf5"/>
           <stop offset="100%" stop-color="#8b3cf7"/>
         </linearGradient>
       </defs>
-      <!-- plugg wordmark -->
       <text x="2" y="34" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="34" fill="#1a1f3a" letter-spacing="-1">plugg</text>
-      <!-- plug prongs — sit flush against D-body left edge -->
       <rect x="152" y="13" width="16" height="6.5" rx="3.25" fill="url(#lg)"/>
       <rect x="152" y="24.5" width="16" height="6.5" rx="3.25" fill="url(#lg)"/>
-      <!-- D-shaped socket body: flat left, rounded right (two quarter-circle arcs) -->
-      <path d="M165 5 H242 A17 17 0 0 1 259 22 A17 17 0 0 1 242 39 H165 Z" fill="url(#lg)"/>
-      <!-- IN label -->
-      <text x="211" y="28" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12" fill="white" letter-spacing="3" text-anchor="middle">IN</text>
+      <!-- Full rounded capsule pill -->
+      <rect x="165" y="5" width="88" height="34" rx="17" fill="url(#lg)"/>
+      <text x="209" y="28" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12" fill="white" letter-spacing="3" text-anchor="middle">IN</text>
     </svg>
   </a>
   <ul class="nav-links">
@@ -1148,19 +1146,19 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
 <!-- ── FOOTER ── -->
 <footer>
   <a href="#top" class="f-brand" aria-label="PluggedIn — back to top">
-    <svg height="28" viewBox="0 0 262 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <svg height="28" viewBox="0 0 258 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
       <defs>
-        <linearGradient id="fg" x1="152" y1="0" x2="259" y2="0" gradientUnits="userSpaceOnUse">
+        <linearGradient id="fg" x1="152" y1="5" x2="253" y2="39" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#5bc8f5"/>
-          <stop offset="48%" stop-color="#5b6bf5"/>
+          <stop offset="50%" stop-color="#5b6bf5"/>
           <stop offset="100%" stop-color="#8b3cf7"/>
         </linearGradient>
       </defs>
       <text x="2" y="34" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="34" fill="#1a1f3a" letter-spacing="-1">plugg</text>
       <rect x="152" y="13" width="16" height="6.5" rx="3.25" fill="url(#fg)"/>
       <rect x="152" y="24.5" width="16" height="6.5" rx="3.25" fill="url(#fg)"/>
-      <path d="M165 5 H242 A17 17 0 0 1 259 22 A17 17 0 0 1 242 39 H165 Z" fill="url(#fg)"/>
-      <text x="211" y="28" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12" fill="white" letter-spacing="3" text-anchor="middle">IN</text>
+      <rect x="165" y="5" width="88" height="34" rx="17" fill="url(#fg)"/>
+      <text x="209" y="28" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="12" fill="white" letter-spacing="3" text-anchor="middle">IN</text>
     </svg>
   </a>
   <p class="f-mid">Connecting Aotearoa's music community</p>
